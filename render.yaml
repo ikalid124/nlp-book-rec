@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: nlp-book-rec-api
+    runtime: python
+    region: oregon
+    rootDir: ml_service
+    buildCommand: bash build.sh
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    plan: free
+    envVars:
+      - key: KAGGLE_USERNAME
+        sync: false
+      - key: KAGGLE_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.11.0"

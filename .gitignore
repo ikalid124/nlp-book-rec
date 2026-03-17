@@ -29,3 +29,8 @@ Thumbs.db
 
 # Serialized model files
 *.pkl
+
+# Kaggle dataset artifacts
+*.csv
+*.zip
+*.db

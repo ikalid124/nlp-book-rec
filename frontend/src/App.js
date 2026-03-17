@@ -1,22 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 import kalidImg from './KalidIbrahim-portraitphoto.jpg';
 import srewashiImg from './srewashi.jpg';
-import winnieImg from './winnie.jpg';  
+import winnieImg from './winnie.jpg';
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
   const [prompt, setPrompt] = useState("");
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Prefetch: wake up Render on page load
+  useEffect(() => {
+    axios.get(`${API_URL}/health`).catch(() => {});
+  }, []);
 
   const handleSubmit = async () => {
+    if (!prompt.trim()) {
+      setError("Please describe the kind of book you're looking for.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setResults([]);
+
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/recommend`, {
-        prompt,
-      });
+      const response = await axios.post(
+        `${API_URL}/recommend`,
+        { prompt },
+        { timeout: 90000 }
+      );
       setResults(response.data);
     } catch (err) {
+      if (err.code === "ECONNABORTED") {
+        setError("The recommendation engine is waking up. Please try again in a moment.");
+      } else {
+        setError("Something went wrong fetching recommendations. Please try again.");
+      }
       console.error("Error fetching recommendations", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,8 +88,19 @@ function App() {
           placeholder="e.g., I want to read books about fantasy with dragons and magic"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
         />
-        <button onClick={handleSubmit}>✨ Recommend Books</button>
+        <button onClick={handleSubmit} disabled={loading}>
+          {loading ? "Finding books..." : "✨ Recommend Books"}
+        </button>
+
+        {loading && (
+          <p className="loading-message">
+            Searching through thousands of books for you... This may take up to a minute on the first request.
+          </p>
+        )}
+
+        {error && <p className="error-message">{error}</p>}
 
         <div className="results">
           {results.map((book, index) => (
@@ -122,4 +160,3 @@ function App() {
 }
 
 export default App;
-

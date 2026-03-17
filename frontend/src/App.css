@@ -238,3 +238,19 @@ body {
 p {
   font-weight:600;
 }
+
+.loading-message {
+  color: #d97c48;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.error-message {
+  color: #e53935;
+  margin-top: 1rem;
+}
+
+button:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}

@@ -1,4 +1,7 @@
-flask;
-joblib;
-scikit-learn;
-pandas;
+flask
+flask-cors
+joblib
+scikit-learn
+pandas
+gunicorn
+kaggle
