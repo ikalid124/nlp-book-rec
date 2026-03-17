@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import axios from "axios";
+import kalidImg from './KalidIbrahim-portraitphoto.jpg';
 import srewashiImg from './srewashi.jpg';
 import winnieImg from './winnie.jpg';  
 
@@ -81,7 +82,7 @@ function App() {
 
       <div className="team-grid">
         <div className="team-card">
-          <img src="https://cosmichomicide.com/wp-content/uploads/2013/09/linkedin-default.png" alt="Kalid Ibrahim" />
+          <img src={kalidImg} alt="Kalid Ibrahim" />
           <h3>Kalid I.</h3>
           <p>Role</p>
           <a href="https://www.linkedin.com/in/kalid-ibrahim-b57259355/" target="_blank" rel="noopener noreferrer">
